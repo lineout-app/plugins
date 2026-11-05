@@ -1,0 +1,14 @@
+{
+  "name": "lineout",
+  "owner": { "name": "Mivekk" },
+  "description": "Claude Code plugins for Lineout",
+  "plugins": [
+    {
+      "name": "lineout",
+      "source": "./plugins/lineout",
+      "description": "Lineout MCP server and a skill for drawing architecture diagrams",
+      "category": "productivity",
+      "tags": ["diagrams", "architecture", "mcp"]
+    }
+  ]
+}

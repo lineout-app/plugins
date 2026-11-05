@@ -1,0 +1,84 @@
+{
+  "pages": [
+    {
+      "name": "Request flow",
+      "nodes": [
+        {
+          "id": "cloud",
+          "type": "group",
+          "icon": "AWS-Cloud",
+          "position": { "x": 128, "y": 48 },
+          "size": { "width": 768, "height": 360 },
+          "label": "AWS Cloud"
+        },
+        {
+          "id": "users",
+          "icon": "Users",
+          "position": { "x": 0, "y": 120 },
+          "label": "Users"
+        },
+        {
+          "id": "cdn",
+          "icon": "Amazon-CloudFront",
+          "position": { "x": 192, "y": 120 },
+          "label": "CloudFront"
+        },
+        {
+          "id": "site",
+          "icon": "Amazon-Simple-Storage-Service",
+          "position": { "x": 384, "y": 120 },
+          "label": "Static site"
+        },
+        {
+          "id": "api",
+          "icon": "Amazon-API-Gateway",
+          "position": { "x": 384, "y": 280 },
+          "label": "API Gateway"
+        },
+        {
+          "id": "fn",
+          "icon": "AWS-Lambda",
+          "position": { "x": 576, "y": 280 },
+          "label": "Orders handler"
+        },
+        {
+          "id": "table",
+          "icon": "Amazon-DynamoDB",
+          "position": { "x": 768, "y": 280 },
+          "label": "Orders table"
+        }
+      ],
+      "arrows": [
+        {
+          "id": "a1",
+          "start": { "nodeId": "users", "side": "right", "offset": 0 },
+          "end": { "nodeId": "cdn", "side": "left", "offset": 0 },
+          "label": { "text": "HTTPS", "position": 0.25, "side": "over" }
+        },
+        {
+          "id": "a2",
+          "start": { "nodeId": "cdn", "side": "right", "offset": 0 },
+          "end": { "nodeId": "site", "side": "left", "offset": 0 }
+        },
+        {
+          "id": "a3",
+          "start": { "nodeId": "cdn", "side": "right", "offset": 16 },
+          "end": { "nodeId": "api", "side": "left", "offset": 0 },
+          "frozen": [{ "orientation": "vertical", "value": 320 }],
+          "label": { "text": "/api/*", "position": 0.5, "side": "over" }
+        },
+        {
+          "id": "a4",
+          "start": { "nodeId": "api", "side": "right", "offset": 0 },
+          "end": { "nodeId": "fn", "side": "left", "offset": 0 },
+          "label": { "text": "Invoke", "position": 0.5, "side": "over" }
+        },
+        {
+          "id": "a5",
+          "start": { "nodeId": "fn", "side": "right", "offset": 0 },
+          "end": { "nodeId": "table", "side": "left", "offset": 0 }
+        }
+      ]
+    }
+  ]
+}

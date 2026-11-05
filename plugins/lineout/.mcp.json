@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "lineout": {
+      "type": "http",
+      "url": "${user_config.lineout_url}/api/mcp"
+    }
+  }
+}
