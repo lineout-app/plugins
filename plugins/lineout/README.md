@@ -9,10 +9,10 @@ Bundles two things:
 
 ```bash
 claude plugin marketplace add lineout-app/plugins
-claude plugin install lineout@lineout --config lineout_url=https://lineout.app
+claude plugin install lineout@lineout --config lineout_url=https://dashboard.lineout.app
 ```
 
-`lineout_url` is the origin of the Lineout deployment the MCP server connects to; it defaults to `https://lineout.app`. Pass it explicitly, because installing from the command line may leave it unset. To work against a local dev server, add the marketplace from a clone of the Lineout app repository (`claude plugin marketplace add ./`) and install with `--config lineout_url=http://localhost:3000`. To switch an existing install, uninstall and install again with the new URL, or run `/plugin configure lineout@lineout` in Claude Code.
+`lineout_url` is the origin of the Lineout deployment the MCP server connects to; it defaults to `https://dashboard.lineout.app`. Pass it explicitly, because installing from the command line may leave it unset. To work against a local dev server, add the marketplace from a clone of the Lineout app repository (`claude plugin marketplace add ./`) and install with `--config lineout_url=http://localhost:3000`. To switch an existing install, uninstall and install again with the new URL, or run `/plugin configure lineout@lineout` in Claude Code.
 
 Then run `/mcp` in Claude Code, pick `plugin:lineout:lineout` and authenticate. Your browser opens Lineout's consent page. Approved connections are listed, and can be disconnected, under **Settings → Connected apps**. After changing the URL, authenticate again.
 
