@@ -1,6 +1,6 @@
 {
   "name": "lineout",
-  "owner": { "name": "Mivekk" },
+  "owner": { "name": "lineout-app" },
   "description": "Claude Code plugins for Lineout",
   "plugins": [
     {
