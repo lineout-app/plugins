@@ -8,7 +8,7 @@ allowed-tools: mcp__plugin_lineout_lineout__list_workspace mcp__plugin_lineout_l
 
 Lineout is a collaborative editor for AWS architecture diagrams, organized as team → project → diagram → pages. Two tools are involved:
 
-- **The `lineout` MCP server** reads and writes diagrams in Lineout. If its tools are missing or return an authorization error, tell the user to run `/mcp` and authenticate the `lineout` server.
+- **The `lineout` MCP server** reads and writes diagrams in Lineout. If its tools are missing or return an authorization error, tell the user to run `/mcp` and authenticate the `lineout` server. If a tool result has a `notice`, for example that this plugin is out of date, pass it on to the user once.
 - **The `lineout` command line tool** renders diagram JSON to SVG, PNG or JPG locally, with the same drawing code as the editor. Use it to check layouts by eye and to produce image files. See [rendering.md](rendering.md).
 
 Without the MCP server you can still produce diagram JSON files and images with the CLI, following steps 2–4 and "Image files" below. For anything stored in Lineout you need the server.
@@ -35,6 +35,10 @@ Without the MCP server you can still produce diagram JSON files and images with 
 Follow [layout.md](layout.md). In short: one main flow left to right, an 8-unit grid, 192 units between columns and 160 between rows, groups padded 64 units (72 at the top), and arrows attached to the sides that face each other. [examples/serverless-api.json](examples/serverless-api.json) is a complete, valid page to copy from.
 
 Arrows route themselves, but the auto-route only avoids the arrow's own two nodes. For every arrow between nodes that aren't neighbors, check whether its path would cross another node, label or group border. If it would, pin it with `frozen` lines through the empty corridors between columns and rows, as described in "Arrow routes and frozen segments" in [layout.md](layout.md).
+
+For things that aren't AWS services, such as process steps, decisions, actors or notes, use shape nodes (`"type": "shape"` with a `shape` like `"rectangle"`, `"diamond"` or `"cylinder"`) with the text as their label, as described in `get_format_guide`. For notes and annotations, use a `"sticky-note"` shape with a fill such as `"yellow"` and a `"transparent"` border color. Size each shape for its text.
+
+Leave `style` off nodes and arrows unless the user asks for colors, fills, fonts, text alignment, line styles or arrowheads, or the page you're editing already uses them. The fields are in "Styles" in `get_format_guide`. Prefer palette color names over hex values, and keep `style` on items you upsert with `edit_page`, because an upsert replaces the whole item.
 
 ### 5. Write
 - **New diagram:** call `create_diagram` with the whole document in one call: `{ "pages": [{ "name": ..., "nodes": [...], "arrows": [...] }] }`.

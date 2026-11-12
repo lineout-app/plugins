@@ -1,7 +1,7 @@
 {
   "name": "lineout",
   "displayName": "Lineout",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "description": "Draw and edit cloud architecture diagrams in Lineout: the Lineout MCP server plus a skill for laying out diagrams from descriptions or infrastructure code.",
   "author": { "name": "lineout-app" },
   "keywords": ["diagrams", "architecture", "aws", "mcp"],

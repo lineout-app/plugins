@@ -11,6 +11,8 @@ uv tool install "lineout-cli[jpg]"
 
 Without uv, use `pipx install "lineout-cli[jpg]"`. Never install the package named `lineout` (`pip install lineout`, `uvx lineout`): that name on PyPI belongs to an unrelated package. If the user declines or the install fails, tell them and skip rendering.
 
+This skill needs `lineout` 0.2.0 or newer. If `lineout --version` prints an older version, ask the user to upgrade it with `uv tool upgrade lineout-cli` (or `pipx upgrade lineout-cli`) before rendering. When the CLI prints that a newer `lineout-cli` is available, mention it to the user once.
+
 ## Input: one page per file
 The CLI renders a single page: `{ "nodes": [...], "arrows": [...] }`, the same format the MCP tools use. A `{ "pages": [...] }` document fails with `nodes must be an array`. Write one file per page. To render a page you read with `get_diagram`, take that page's `nodes` and `arrows` and leave out its `index` and `name`.
 

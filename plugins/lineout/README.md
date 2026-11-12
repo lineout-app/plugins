@@ -16,14 +16,20 @@ claude plugin install lineout@lineout --config lineout_url=https://dashboard.lin
 
 Then run `/mcp` in Claude Code, pick `plugin:lineout:lineout` and authenticate. Your browser opens Lineout's consent page. Approved connections are listed, and can be disconnected, under **Settings → Connected apps**. After changing the URL, authenticate again.
 
-To update after a new version is pushed:
+If you added the server by hand before (`claude mcp add ... lineout`), remove it (`claude mcp remove lineout`) so the tools aren't listed twice.
+
+## Updates
+
+Every Lineout release publishes a new version of the plugin. Claude Code doesn't update plugins from third-party marketplaces on its own until you turn it on: run `/plugin`, open **Marketplaces**, select `lineout` and choose **Enable auto-update**. Claude Code then checks for updates a few minutes into each session. Run `/reload-plugins` to load an update in the current session.
+
+To update by hand:
 
 ```bash
 claude plugin marketplace update lineout
 claude plugin update lineout@lineout
 ```
 
-If you added the server by hand before (`claude mcp add ... lineout`), remove it (`claude mcp remove lineout`) so the tools aren't listed twice.
+When the installed plugin is older than the Lineout server, the server says so in its tool results and Claude passes it on.
 
 ## Develop
 
@@ -35,3 +41,5 @@ claude plugin validate packages/claude-plugin --strict
 The skill lives in `skills/diagrams/`: `SKILL.md` (workflow and safety rules), `layout.md` (spacing, grouping and arrow rules), `rendering.md` (rendering pages to images with the `lineout` CLI from `packages/python`, to check layouts by eye and to produce image files) and `examples/serverless-api.json` (a valid page to copy from).
 
 The skill uses the `lineout` CLI when it's installed. Install it with `uv tool install "lineout-cli[jpg]"`. To develop against local changes instead, run `pnpm build:python` in the app repository, then `uv tool install --editable "./packages/python[jpg]"`. The tool descriptions and the format guide that `get_format_guide` returns live in the app, in `lib/server/mcp/`.
+
+Don't change versions by hand. `pnpm release` in the app repository writes the release version into `plugin.json`, into the `X-Lineout-Plugin` header in `.mcp.json` (the server compares it with its own version) and into the minimum CLI version in `rendering.md`. The release workflow then copies this folder to `lineout-app/plugins`.
