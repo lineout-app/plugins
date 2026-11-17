@@ -6,7 +6,7 @@ allowed-tools: mcp__plugin_lineout_lineout__list_workspace mcp__plugin_lineout_l
 
 # Lineout diagrams
 
-Lineout is a collaborative editor for AWS architecture diagrams, organized as team → project → diagram → pages. Two tools are involved:
+Lineout is an AWS-native, collaborative editor for cloud architecture diagrams, organized as team → project → diagram → pages. Two tools are involved:
 
 - **The `lineout` MCP server** reads and writes diagrams in Lineout. If its tools are missing or return an authorization error, tell the user to run `/mcp` and authenticate the `lineout` server. If a tool result has a `notice`, for example that this plugin is out of date, pass it on to the user once.
 - **The `lineout` command line tool** renders diagram JSON to SVG, PNG or JPG locally, with the same drawing code as the editor. Use it to check layouts by eye and to produce image files. See [rendering.md](rendering.md).

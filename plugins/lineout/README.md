@@ -16,7 +16,7 @@ claude plugin install lineout@lineout --config lineout_url=https://dashboard.lin
 
 Then run `/mcp` in Claude Code, pick `plugin:lineout:lineout` and authenticate. Your browser opens Lineout's consent page. Approved connections are listed, and can be disconnected, under **Settings → Connected apps**. After changing the URL, authenticate again.
 
-If you added the server by hand before (`claude mcp add ... lineout`), remove it (`claude mcp remove lineout`) so the tools aren't listed twice.
+If you added the server by hand before (`claude mcp add ... lineout`), remove it with `claude mcp remove lineout`. If it points to a different URL, Claude Code lists the tools twice. If it points to the same URL, Claude Code connects only once but uses your copy instead of the plugin's, which doesn't send the `X-Lineout-Plugin` header, so the server can't tell you when the plugin is out of date.
 
 ## Updates
 
