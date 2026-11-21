@@ -2,7 +2,7 @@
 
 Bundles two things:
 
-- **`lineout` MCP server**: Lineout's `/api/mcp` endpoint. Through it, Claude can list your teams, projects and diagrams, read and edit diagram pages live, manage share links and search the AWS icon set.
+- **`lineout` MCP server**: Lineout's `/api/mcp` endpoint. Through it, Claude can list your teams, projects and diagrams, read and edit diagram pages live, manage share links and search the AWS, Google Cloud, Azure and generic icon sets.
 - **`diagrams` skill** (`/lineout:diagrams`): how to turn a description or infrastructure code (Terraform, CDK, CloudFormation, Kubernetes, docker-compose) into a well laid out Lineout diagram, and how to edit existing diagrams safely. Claude also uses it automatically when you ask for a diagram.
 
 ## Install
