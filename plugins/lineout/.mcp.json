@@ -2,9 +2,9 @@
   "mcpServers": {
     "lineout": {
       "type": "http",
-      "url": "${user_config.lineout_url}/api/mcp",
+      "url": "https://dashboard.lineout.app/api/mcp",
       "headers": {
-        "X-Lineout-Plugin": "0.4.0"
+        "X-Lineout-Plugin": "0.5.0"
       }
     }
   }

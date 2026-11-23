@@ -9,12 +9,10 @@ Bundles two things:
 
 ```bash
 claude plugin marketplace add lineout-app/plugins
-claude plugin install lineout@lineout --config lineout_url=https://dashboard.lineout.app
+claude plugin install lineout@lineout
 ```
 
-`lineout_url` is the origin of the Lineout deployment the MCP server connects to; it defaults to `https://dashboard.lineout.app`. Pass it explicitly, because installing from the command line may leave it unset. To work against a local dev server, add the marketplace from a clone of the Lineout app repository (`claude plugin marketplace add ./`) and install with `--config lineout_url=http://localhost:3000`. To switch an existing install, uninstall and install again with the new URL, or run `/plugin configure lineout@lineout` in Claude Code.
-
-Then run `/mcp` in Claude Code, pick `plugin:lineout:lineout` and authenticate. Your browser opens Lineout's consent page. Approved connections are listed, and can be disconnected, under **Settings → Connected apps**. After changing the URL, authenticate again.
+Then run `/mcp` in Claude Code, pick `plugin:lineout:lineout` and authenticate. Your browser opens Lineout's consent page at `https://dashboard.lineout.app`. Approved connections are listed, and can be disconnected, under **Settings → Connected apps**.
 
 If you added the server by hand before (`claude mcp add ... lineout`), remove it with `claude mcp remove lineout`. If it points to a different URL, Claude Code lists the tools twice. If it points to the same URL, Claude Code connects only once but uses your copy instead of the plugin's, which doesn't send the `X-Lineout-Plugin` header, so the server can't tell you when the plugin is out of date.
 
@@ -38,8 +36,10 @@ claude --plugin-dir packages/claude-plugin
 claude plugin validate packages/claude-plugin --strict
 ```
 
+In this folder, `.mcp.json` takes the server's origin from the `lineout_url` setting (**Lineout URL**), which defaults to `https://dashboard.lineout.app`. To work against a local dev server, add the marketplace from a clone of the Lineout app repository (`claude plugin marketplace add ./`) and install with `--config lineout_url=http://localhost:3000`. Pass it explicitly, because installing from the command line may leave it unset. To switch an existing install, uninstall and install again with the new URL, or run `/plugin configure lineout@lineout` in Claude Code, then authenticate again.
+
 The skill lives in `skills/diagrams/`: `SKILL.md` (workflow and safety rules), `layout.md` (spacing, grouping and arrow rules), `rendering.md` (rendering pages to images with the `lineout` CLI from `packages/python`, to check layouts by eye and to produce image files) and `examples/serverless-api.json` (a valid page to copy from).
 
 The skill uses the `lineout` CLI when it's installed. Install it with `uv tool install "lineout-cli[jpg]"`. To develop against local changes instead, run `pnpm build:python` in the app repository, then `uv tool install --editable "./packages/python[jpg]"`. The tool descriptions and the format guide that `get_format_guide` returns live in the app, in `lib/server/mcp/`.
 
-Don't change versions by hand. `pnpm release` in the app repository writes the release version into `plugin.json`, into the `X-Lineout-Plugin` header in `.mcp.json` (the server compares it with its own version) and into the minimum CLI version in `rendering.md`. The release workflow then copies this folder to `lineout-app/plugins`.
+Don't change versions by hand. `pnpm release` in the app repository writes the release version into `plugin.json`, into the `X-Lineout-Plugin` header in `.mcp.json` (the server compares it with its own version) and into the minimum CLI version in `rendering.md`. The release workflow then copies this folder to `lineout-app/plugins`, writes `https://dashboard.lineout.app` into the copy's `.mcp.json` in place of `lineout_url` and removes the setting from its `plugin.json`, because claude.ai ignores a plugin server whose URL uses a setting.
