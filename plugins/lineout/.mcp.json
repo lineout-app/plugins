@@ -4,7 +4,7 @@
       "type": "http",
       "url": "https://dashboard.lineout.app/api/mcp",
       "headers": {
-        "X-Lineout-Plugin": "0.5.0"
+        "X-Lineout-Plugin": "0.5.1"
       }
     }
   }
