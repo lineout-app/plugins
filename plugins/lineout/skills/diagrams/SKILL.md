@@ -72,6 +72,7 @@ Lineout estimates the monthly cost of the AWS service icons inside an AWS Cloud 
 - Set the region on the AWS Cloud group, or on a Region group inside it, never on a service. Use `count` for identical copies of a service, such as 20 Fargate tasks, and `excluded: true` to leave a service out.
 - Inputs depend on each other: changing one can show or hide others. After a change, call `get_pricing_inputs` again before setting inputs that weren't listed before.
 - `set_pricing` changes nothing when any value is invalid, and lists every problem. Fix those values and retry. Don't guess ids that `get_pricing_inputs` didn't return.
+- A `get_cost_estimate` row with `missing: true` has an empty field the AWS Pricing Calculator requires; `get_pricing_inputs` marks it `required: true`. Mention it to the user, and fill it in only when the user has given you a value. It doesn't block anything.
 - Only change pricing settings the user asked for or agreed to, and say what you changed and how the estimate moved.
 
 ### Cost stages
@@ -82,10 +83,11 @@ When the user wants the cost of project stages, such as a PoC, an MVP and produc
 - `get_diagram` shows the page's `stages` and each service's `cost.stages`. Keep both unchanged when you rewrite nodes with `edit_page` or `replace_page`, and change stages only through `set_cost_stages` and `set_pricing`.
 
 ## Plan limits
-Every team has a plan, shown as `plan` in `list_workspace`. On the Free plan, a team holds at most `diagramLimit` diagrams across all its projects and a limited amount of uploaded images, and each person can own a limited number of Free shared teams. Pages don't count. `create_diagram`, `duplicate_diagram`, `move_diagram` into another team, `create_team` and page writes that copy images from another diagram fail with a plan-limit error when they would go over a limit; the error says which limit and ends with a link where the team's owner can change the plan.
-- Tell the user which limit the team reached and pass on the link from the error.
-- Don't retry the call, and don't delete, overwrite or replace diagrams or pages to make room. Let the user decide: upgrade, make room themselves, or put the diagram somewhere else.
+Every team has a plan, shown as `plan` in `list_workspace`. On the Free plan, a team holds at most `diagramLimit` diagrams across all its projects, each of its diagrams holds at most `shapeLimit` nodes across all its pages (arrows don't count), and each person can own a limited number of Free shared teams. On every plan but Enterprise, a team also holds a limited amount of uploaded images. Pages don't count toward `diagramLimit`. `create_diagram`, `duplicate_diagram`, `move_diagram` into another team, `create_team`, page writes that copy images from another diagram and writes that would give a diagram more than `shapeLimit` nodes fail with a plan-limit error; the error says which limit and ends with a link where the team's owner can change the plan. On the Individual and Team plans, upgrading doesn't add image storage, so the image limit error suggests removing images instead and has no link.
+- Tell the user which limit the team reached and pass on the link from the error, if it has one.
+- Don't retry the call, and don't delete, overwrite or replace diagrams, pages or nodes to make room. Let the user decide: upgrade, make room themselves, or put the diagram somewhere else.
 - If `list_workspace` already shows a Free team at its `diagramLimit`, say so before drawing a new diagram for it, instead of finding out when `create_diagram` fails.
+- On a Free team, keep each diagram within `shapeLimit` nodes, counting every page. When a request needs more, say so before drawing and ask whether to simplify it or upgrade, instead of finding out when a write fails.
 
 A Free team can also hold more than its limits allow, for example after its paid plan ended. Then part of it is read-only: `list_workspace` marks diagrams nobody can edit with `locked: true`, and a team where the user can only view the diagrams with `viewOnly: true`. `get_diagram` reports `role: "viewer"` for both.
 - Read, explain and render these diagrams as usual, but don't try to change them. Writes fail with an error that says the diagram is read-only or that the user can only view the team's diagrams.
@@ -106,7 +108,7 @@ People can lock a page in the editor so nobody changes it by accident. `get_diag
 People can upload pictures onto the canvas in the editor. They're image nodes, `{ "type": "image", "image": "<image id>", ... }`, with a required `size` and no `icon`.
 - You can move, resize or remove image nodes and give them a `label` as a caption. Keep the width-to-height ratio when resizing, and copy `image` values unchanged.
 - You can't upload images or make up image ids. If the user wants a picture on the canvas, ask them to drop or paste it in the editor.
-- Writing image nodes from another diagram the user can open, for example when copying a page across, copies those images into the target diagram. On the Free plan that counts toward the team's image storage; see "Plan limits".
+- Writing image nodes from another diagram the user can open, for example when copying a page across, copies those images into the target diagram. On every plan but Enterprise that counts toward the team's image storage; see "Plan limits".
 - The CLI draws image nodes as placeholders, because it can't fetch the pictures.
 
 ## Safety
